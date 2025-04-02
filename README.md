@@ -1,4 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Study Material Generator
+
+AI Study Material Generator is a SaaS application designed to generate study materials using AI. This project leverages modern web technologies like Next.js, Tailwind CSS, and various libraries to provide a seamless user experience.
+
+## Features
+
+- AI-powered study material generation using Google Generative AI.
+- User authentication and management with Clerk.
+- Database integration with Neon Database and Drizzle ORM.
+- Responsive UI components built with Radix UI and Tailwind CSS.
+- Animations powered by `tw-animate-css`.
+
+## Tech Stack
+
+- **Frontend**: React, Next.js
+- **Styling**: Tailwind CSS
+- **Backend**: Drizzle ORM, Neon Database
+- **AI Integration**: Google Generative AI
+- **Authentication**: Clerk
+- **Utilities**: Axios, UUID, Class Variance Authority, Lucide React
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Lokesh-Bijarniya/ScholarAi.git
+   ```
 
 ## Getting Started
 
@@ -34,3 +61,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# ScholarAi
