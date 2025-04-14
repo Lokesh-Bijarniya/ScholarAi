@@ -23,7 +23,7 @@ export async function POST(req) {
           webhookSecret
         );
       } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed.`);
+        console.log(`⚠️  Webhook signature verification failed.`err);
         return res.sendStatus(400);
       }
       // Extract the object from the event.
