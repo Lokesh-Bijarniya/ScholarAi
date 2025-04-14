@@ -11,7 +11,7 @@ function StudyMaterialSection({ courseId, course }) {
     {
       name: 'Notes/Chapters',
       description: 'Read notes to prepare it',
-      icon: '/notes.jpg',
+      icon: '/notess.jpg',
       path: '/notes',
       type: 'notes',
     },
@@ -29,13 +29,13 @@ function StudyMaterialSection({ courseId, course }) {
       path: '/quiz',
       type: 'quiz',
     },
-    {
-      name: 'Question/Answer',
-      description: 'Help to practice your learning',
-      icon: '/qa.png',
-      path: '/qa',
-      type: 'qa',
-    },
+    // {
+    //   name: 'Question/Answer',
+    //   description: 'Help to practice your learning',
+    //   icon: '/qa.png',
+    //   path: '/qa',
+    //   type: 'qa',
+    // },
   ];
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function StudyMaterialSection({ courseId, course }) {
   return (
     <div className="mt-10">
       <h2 className="text-xl font-semibold mb-4">Study Material</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {MaterialList.map((material, index) => (
           <Link href={`/course/${courseId}${material.path}`} key={index}>
             <MaterialCardItem

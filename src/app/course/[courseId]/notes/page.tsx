@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
+import parse from 'html-react-parser';  // Import the HTML parser
 
 function ViewNotes() {
   const { courseId } = useParams();
   const [notes, setNotes] = useState([]);
   const [stepCount, setStepCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,10 +17,11 @@ function ViewNotes() {
   }, []);
 
   const getNotes = async () => {
+    setLoading(true);
     try {
       const result = await axios.post('/api/study-type', {
         courseId,
-        studyType: 'NOTES'
+        studyType: 'NOTES',
       });
       console.log("get-notes", result);
       if (result.data) {
@@ -27,14 +29,27 @@ function ViewNotes() {
       }
     } catch (error) {
       console.error("Error fetching notes:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const currentNoteRaw = notes[stepCount];
-  const parsedNote = currentNoteRaw?.notes ? JSON.parse(currentNoteRaw?.notes) : null;
-  console.log("parsedNote", parsedNote);
+  const parsedNote = currentNoteRaw?.notes ? tryParseJSON(currentNoteRaw?.notes) : null;
 
-  // If no note or error in parsing, show a fallback message
+  function tryParseJSON(jsonString) {
+    try {
+      return JSON.parse(jsonString);
+    } catch (e) {
+      console.error('Error parsing JSON:', e);
+      return null;
+    }
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   if (!parsedNote) {
     return (
       <div className="p-5">
@@ -44,7 +59,7 @@ function ViewNotes() {
     );
   }
 
-  return notes.length > 0 && (
+  return (
     <div className="p-5">
       {/* Progress Bar */}
       <div className="flex gap-2 items-center mb-6">
@@ -62,7 +77,7 @@ function ViewNotes() {
           variant="outline"
           size="sm"
           onClick={() => setStepCount(stepCount - 1)}
-          disabled={stepCount === 0}
+          disabled={stepCount <= 0}
         >
           Previous
         </Button>
@@ -78,19 +93,19 @@ function ViewNotes() {
       </div>
 
       {/* Current Note Content */}
-      <div className="mb-10 prose lg:prose-xl"> {/* Apply the prose class here */}
+      <div className="mb-10 prose lg:prose-xl">
         <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
           <span className="text-2xl">{parsedNote.emoji}</span> {parsedNote.chapterTitle}
         </h2>
         <p className="text-gray-600 mb-4">{parsedNote.chapterSummary}</p>
 
-        {/* Render HTML content here */}
-        <div className="mb-10 prose prose-neutral lg:prose-xl !max-w-none">
-          <div
-            dangerouslySetInnerHTML={{ __html: parsedNote?.content }}
-            className="[&>*]:!max-w-screen-xl [&>*]:!mx-auto" // Force container styles
-          />
+        <div className="note-content mb-10 prose lg:prose-xl !max-w-none">
+          <div className="[&>*]:!max-w-screen-xl [&>*]:!mx-auto">
+            {parsedNote?.content && parse(parsedNote?.content)}
+          </div>
         </div>
+
+
       </div>
 
       {/* End of Notes */}
