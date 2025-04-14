@@ -1,11 +1,15 @@
 "use client";
-import React, { useState, useEffect } from 'react'
-import SelectOption from './_components/SelectOption';
-import { Button } from '@/components/ui/button';
-import TopicInput from './_components/TopicInput';
-import axios from 'axios';
-import {v4 as uuidv4} from 'uuid';
 import { useUser } from '@clerk/nextjs';
+import axios from 'axios';
+import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { v4 as uuidv4 } from 'uuid';
+import { Button } from '@/components/ui/button';
+import SelectOption from './_components/SelectOption';
+import TopicInput from './_components/TopicInput';
+import { CourseCountContext } from '../_context/CourseCountContext';
 
 
 interface FormData {
@@ -17,25 +21,47 @@ interface FormData {
 function Create() {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({}); // Use an empty object initially
-  const {user} = useUser();
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const {totalCourse,setTotalCourse} = useContext(CourseCountContext);
 
-  const handleUserInput = (fieldName: string, fieldValue:  string | number) => {
+
+  const router = useRouter();
+
+  const handleUserInput = (fieldName: string, fieldValue: string | number) => {
     setFormData(prevState => {
       const updatedState = { ...prevState, [fieldName]: fieldValue };
       return updatedState;
     });
   }
 
-// Used to Save User Input and Generate Course Layout using AI
-  const GenerateCourseOutline = ()=>{
+  // Used to Save User Input and Generate Course Layout using AI
+  const GenerateCourseOutline = async () => {
+    if (totalCourse >= 5) {
+      toast.warning("You’ve used all 5 free credits. Please upgrade to create more courses.");
+      return;
+    }
+  
+    setIsLoading(true);
     const courseId = uuidv4();
-     const result = axios.post('/api/generate-course-outline',{
-      courseId : courseId,
-      ...formData,
-      createdBy : user?.primaryEmailAddress?.emailAddress
-
-     })
-  }
+    try {
+      const result = await axios.post('/api/generate-course-outline', {
+        courseId: courseId,
+        ...formData,
+        createdBy: user?.primaryEmailAddress?.emailAddress
+      });
+  
+      toast.success("Your course is being generated. Click on Refresh on the dashboard!");
+      router.replace('/dashboard');
+      console.log(result.data.result.resp);
+    } catch (error) {
+      toast.error("Something went wrong while generating the course.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   // Log the updated formData whenever it changes
   useEffect(() => {
@@ -60,7 +86,8 @@ function Create() {
 
       <div className="flex justify-between w-full mt-32">
         {step !== 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>Prev</Button> : "-"}
-        {step === 0 ? <Button onClick={() => setStep(step + 1)}>Next</Button> : <Button onClick={GenerateCourseOutline}>Generate</Button>}
+        {step === 0 ? <Button onClick={() => setStep(step + 1)}>Next</Button> : <Button onClick={GenerateCourseOutline} disabled={isLoading}>
+          {isLoading ? <Loader className='animate-spin' /> : 'Generate'}</Button>}
       </div>
     </div>
   )

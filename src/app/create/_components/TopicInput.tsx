@@ -1,5 +1,4 @@
 "use client"
-import { Textarea } from '@/components/ui/textarea';
 import React from 'react';
 import {
     Select,
@@ -8,6 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from '@/components/ui/textarea';
 
 interface TopicInputProps {
     setTopic: (topic: string) => void;
@@ -16,7 +16,7 @@ interface TopicInputProps {
 
 const TopicInput: React.FC<TopicInputProps> = ({ setTopic, setDifficultyLevel }) => {
     return (
-        <div className='mt-10 w-full flex flex-col'>
+        <div className='mt-10 w-full flex flex-col font-semibold'>
             <h2>Enter Topic or paste the content for which you want to generate study material</h2>
             <Textarea
                 placeholder='Start writing here'
@@ -24,7 +24,7 @@ const TopicInput: React.FC<TopicInputProps> = ({ setTopic, setDifficultyLevel })
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTopic(e.target.value)}
             />
 
-            <h2 className='mt-5 mb-3'>Select the difficulty level</h2>
+            <h2 className='mt-5 mb-3 font-semibold'>Select the difficulty level</h2>
             <Select onValueChange={(value: string) => setDifficultyLevel(value)}>
                 <SelectTrigger className="w-full">
                     <SelectValue placeholder="Difficulty Level" />

@@ -1,4 +1,8 @@
 import { Inngest } from "inngest";
 
-// Create a client to send and receive events
-export const inngest = new Inngest({ id: "ScholarAi" });
+console.log("Inngest Event Key:", process.env.INNGEST_EVENT_KEY);
+
+export const inngest = new Inngest({
+  id: "ScholarAi", 
+  eventKey: process.env.INNGEST_EVENT_KEY, 
+});

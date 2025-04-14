@@ -3,12 +3,10 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-// Define the type for props
 interface SelectOptionProps {
     selectedStudyType: (studyType: string) => void;
 }
 
-// Define the type for an option
 interface Option {
     name: string;
     icon: string;
@@ -26,28 +24,29 @@ const SelectOption: React.FC<SelectOptionProps> = ({ selectedStudyType }) => {
     ];
 
     return (
-        <div>
-            <h2 className='text-center mb-2 text-lg'>
+        <div className="max-w-5xl mx-auto px-4 py-6">
+            <h2 className="text-center text-xl font-semibold mb-6">
                 For which do you want to create your personal study material?
             </h2>
 
-            <div className='mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
                 {options.map((option, idx) => (
                     <div 
-                        key={idx} 
-                        className={`p-4 flex flex-col items-center border rounded-xl hover:border-blue-500 cursor-pointer ${option.name === selectedOption ? 'border-blue-500' : ''}`}
+                        key={idx}
+                        className={`p-5 bg-white shadow-md rounded-xl flex flex-col items-center justify-center transition-all duration-300 border-2 cursor-pointer 
+                        ${option.name === selectedOption ? 'border-blue-500' : 'border-transparent hover:border-blue-300'}`}
                         onClick={() => {
                             setSelectedOption(option.name);
                             selectedStudyType(option.name);
                         }}
                     >
-                        <Image src={option.icon} alt={option.name} height={50} width={50} />
-                        <h2 className='text-sm'>{option.name}</h2>
+                        <Image src={option.icon} alt={option.name} height={60} width={60} className="mb-3" />
+                        <h2 className="text-sm font-medium text-center">{option.name}</h2>
                     </div>
                 ))}
             </div>
         </div>
     );
-}
+};
 
 export default SelectOption;
