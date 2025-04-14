@@ -23,7 +23,7 @@ function Create() {
   const [formData, setFormData] = useState<FormData>({}); // Use an empty object initially
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
-  const {totalCourse,setTotalCourse} = useContext(CourseCountContext);
+  const {totalCourse} = useContext(CourseCountContext);
 
 
   const router = useRouter();

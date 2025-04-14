@@ -4,7 +4,7 @@ import { inngest } from "@/inngest/client";
 import { db } from "@/lib/db/client";
 import { STUDY_MATERIAL_TABLE } from "@/lib/db/schema";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const { courseId, topic, studyType, difficultyLevel, createdBy } =
     await req.json();
   const courseType = studyType;

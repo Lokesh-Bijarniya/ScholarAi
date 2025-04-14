@@ -74,6 +74,8 @@ export const CreateNewUser = inngest.createFunction(
         }
       }
     );
+
+    console.log(response);
   }
 );
 
@@ -132,7 +134,7 @@ export const GenerateStudyTypeContent = inngest.createFunction(
   { id: "Generate Study Type Content" },
   { event: "studyType.content" },
   async ({ event, step }) => {
-    const { studyType, prompt, courseId, recordId } = event.data;
+    const { studyType, prompt, recordId } = event.data;
 
 
     const AiRes = await step.run(
@@ -150,8 +152,8 @@ export const GenerateStudyTypeContent = inngest.createFunction(
     // console.log("flash-ai-res",flashAiRes);
 
     // save the result
-    const dbResult = await step.run("Save Result to DB", async () => {
-      const result = await db.update(STUDY_TYPE_CONTENT_TABLE).set({
+    await step.run("Save Result to DB", async () => {
+      await db.update(STUDY_TYPE_CONTENT_TABLE).set({
           content: AiRes,
           status: "Ready",
         }).where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));

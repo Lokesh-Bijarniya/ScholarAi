@@ -16,7 +16,7 @@ interface MenuItem {
 }
 
 function Sidebar() {
-    const {totalCourse,setTotalCourse} = useContext(CourseCountContext);
+    const {totalCourse} = useContext(CourseCountContext);
 
   const MenuList: MenuItem[] = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },

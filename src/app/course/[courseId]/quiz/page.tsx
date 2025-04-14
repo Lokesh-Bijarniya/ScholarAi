@@ -8,7 +8,7 @@ import QuizCardItem from './_components/QuizCardItem';
 function Quiz() {
     const { courseId } = useParams();
     const [quiz, setQuiz] = useState([]);
-    const [quizData, setQuizData] = useState();
+    // const [quizData, setQuizData] = useState();
     const [stepCount, setStepCount] = useState(0); // Start at 0 for the first step
     const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
     const [correctAnswer, setCorrectAnswer] = useState();
@@ -28,7 +28,7 @@ function Quiz() {
             courseId: courseId,
             studyType: 'Quiz'
         });
-        setQuizData(res.data);
+        // setQuizData(res.data);
         setQuiz(res.data?.content?.quiz);
     };
 

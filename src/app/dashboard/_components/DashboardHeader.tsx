@@ -1,5 +1,4 @@
 import { UserButton, useUser } from '@clerk/nextjs'
-import { UserCircle } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react'
 

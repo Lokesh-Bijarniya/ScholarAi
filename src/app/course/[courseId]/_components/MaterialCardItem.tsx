@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-function MaterialCardItem({ material, index, studyTypeContent, course }) {
+function MaterialCardItem({ material, studyTypeContent, course }) {
   const isReady = studyTypeContent?.[material.type]?.length > 0;
 
   const [loading, setLoading] = useState(false);
@@ -15,13 +15,14 @@ function MaterialCardItem({ material, index, studyTypeContent, course }) {
     course?.courseLayout?.chapters?.forEach((chapter) => {
       chapters = (chapter.chapterTitle || chapter.chapter_title) + ', ' + chapters;
     });
-    const response = await axios.post(`/api/study-type-content`,
+    const result = await axios.post(`/api/study-type-content`,
       {
         courseId: course?.courseId,
         type: material.name,
         chapters: chapters,
       }
     );
+    console.log(result.data);
     setLoading(false);
   }
 

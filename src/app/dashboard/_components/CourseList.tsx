@@ -12,7 +12,7 @@ function CourseList() {
   const { user, isLoaded } = useUser();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {totalCourse,setTotalCourse} = useContext(CourseCountContext);
+  const {setTotalCourse} = useContext(CourseCountContext);
 
   useEffect(() => {
     if (isLoaded && user) {

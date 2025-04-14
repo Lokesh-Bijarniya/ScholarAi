@@ -1,4 +1,6 @@
+import { db } from "@/lib/db/client";
 import { USER_TABLE } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -12,7 +14,7 @@ export async function POST(req) {
     if (webhookSecret) {
       // Retrieve the event by verifying the signature using the raw body and secret.
       let event;
-      let signature = req.headers["stripe-signature"];
+      const signature = req.headers["stripe-signature"];
   
       try {
         event = stripe.webhooks.constructEvent(
@@ -41,6 +43,7 @@ export async function POST(req) {
         const result =  await db.update(USER_TABLE).set({
             isMember: true,
         }).where(eq(USER_TABLE.email, data.customer_details.email));
+        console.log(result);
         break;
       case 'invoice.paid':
         // Continue to provision the subscription as payments continue to be made.
@@ -57,6 +60,7 @@ export async function POST(req) {
       default:
         // Unhandled event type
     }
+
   
     return NextResponse.json({ result : "Success" });
 }
